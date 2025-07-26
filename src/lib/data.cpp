@@ -58,7 +58,8 @@ wxString Data::version = wxT(VERSION);
 
 vector<Credentials> CredentialStore::credentials;
 boost::random::mt19937 CredentialStore::gen;
-boost::uuids::random_generator CredentialStore::uuidGen(gen);
+// Con Boost >= 1.72, random_generator ya no acepta un generador personalizado.
+boost::uuids::random_generator CredentialStore::uuidGen;
 
 // This class now uses wxConfig. Any other code is simply for compatibility
 
@@ -126,7 +127,8 @@ bool Data::initialise()
 
 	confLocation = wxStandardPaths::Get().GetUserDataDir();
 
-	wxTextFile config(wxString(confLocation.c_str(), wxConvUTF8) + wxT("/") + wxT(CONF_FILE));
+	// Soluciona ambigüedad: usa c_str().AsChar() para obtener const char*
+	wxTextFile config(wxString(confLocation.mb_str(wxConvUTF8).data(), wxConvUTF8) + wxT("/") + wxT(CONF_FILE));
 
 	if(config.Open())
 	{ // Process config file
@@ -157,7 +159,7 @@ bool Data::initialise()
 		config.Close();
 
 		// Remove old file
-		wxRemoveFile(wxString(confLocation.c_str(), wxConvUTF8) + wxT("/") + wxT(CONF_FILE));
+		wxRemoveFile(wxString(confLocation.mb_str(wxConvUTF8).data(), wxConvUTF8) + wxT("/") + wxT(CONF_FILE));
 		wxRmdir(confLocation);
 
 		// Now, save to new system

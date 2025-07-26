@@ -30,21 +30,21 @@
 namespace droidpad {
 	class SecureConnection : public Connection {
 		public:
-			SecureConnection(AndroidDevice &device) throw (std::runtime_error);
+					   SecureConnection(AndroidDevice &device);
 			virtual ~SecureConnection();
 
 			/**
 			 * Starts the full handshake process, including TLS
 			 */
-			int Start() throw (std::runtime_error);
-			void Stop(bool sendStopMessage = true) throw (std::runtime_error);
+					   int Start();
+					   void Stop(bool sendStopMessage = true);
 
-			virtual const ModeSetting &GetMode() throw (std::runtime_error);
-			virtual const decode::DPJSData GetData() throw (std::runtime_error);
+					   virtual const ModeSetting &GetMode();
+					   virtual const decode::DPJSData GetData();
 
 			// In this mode, binary comms is used all the time, so
 			// no need to request it.
-			inline virtual void RequestBinary() throw (std::runtime_error) { }
+					   inline virtual void RequestBinary() { }
 
 		private:
 			wxString host, port, name;
@@ -53,12 +53,12 @@ namespace droidpad {
 			 * Once a TLS connection has been made,
 			 * start the DroidPad loop etc.
 			 */
-			void StartCommunication() throw(std::runtime_error);
+					   void StartCommunication();
 
 			/**
 			 * Reads the signature from the input stream
 			 */
-			decode::BinarySignature getSignature() throw(std::runtime_error);
+					   decode::BinarySignature getSignature();
 
 			// SSL stuff
 			const SSL_METHOD *tlsMethod;

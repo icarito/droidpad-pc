@@ -72,7 +72,7 @@ void DPConnection::SendMessage(string message) {
 	Write(message.c_str(), message.length());
 }
 
-wxString DPConnection::GetLine() throw (runtime_error) {
+wxString DPConnection::GetLine() {
 	size_t returnPosition;
 	while((returnPosition = inData.find('\n')) == string::npos) {
 		if(!ParseFromNet()) throw runtime_error("Connection closed");
@@ -92,7 +92,7 @@ bool DPConnection::ParseFromNet() {
 	return !Error();
 }
 
-char DPConnection::PeekChar() throw (runtime_error) {
+char DPConnection::PeekChar() {
 	while(inData.length() < 1) {
 		if(!ParseFromNet()) throw runtime_error("Connection closed");
 	}
@@ -108,7 +108,7 @@ string DPConnection::GetBytes(size_t n) {
 	return ret;
 }
 
-const ModeSetting &DPConnection::GetMode() throw (runtime_error)
+const ModeSetting &DPConnection::GetMode()
 {
 	if(mode.initialised) return mode;
 	wxString line = GetLine();
@@ -164,13 +164,13 @@ AXES LAYOUTS
  \   **  \
 **\*******\** <-X
    \  **   \
-    \-*-*---\ <- Phone
-      *  *
-      *   *
-      ^   ^
-      Z   Y
+	\-*-*---\ <- Phone
+	  *  *
+	  *   *
+	  ^   ^
+	  Z   Y
 */
-const DPJSData DPConnection::GetData() throw (runtime_error)
+const DPJSData DPConnection::GetData()
 {
 	char first = PeekChar();
 	switch(first) {
@@ -206,7 +206,7 @@ const DPJSData DPConnection::GetData() throw (runtime_error)
 	return DPJSData();
 }
 
-void DPConnection::RequestBinary() throw (std::runtime_error) {
+void DPConnection::RequestBinary() {
 	SendMessage("<BINARY>\n");
 	LOGV("Binary request sent to server");
 }

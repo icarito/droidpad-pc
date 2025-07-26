@@ -52,10 +52,10 @@ namespace droidpad {
 			virtual int Start() = 0;
 			inline virtual ~Connection() { }
 
-			virtual const ModeSetting &GetMode() throw (std::runtime_error) = 0;
-			virtual const decode::DPJSData GetData() throw (std::runtime_error) = 0;
+					   virtual const ModeSetting &GetMode() = 0;
+					   virtual const decode::DPJSData GetData() = 0;
 
-			virtual void RequestBinary() throw (std::runtime_error) = 0;
+					   virtual void RequestBinary() = 0;
 
 			enum {
 				START_SUCCESS = 0,
@@ -84,23 +84,23 @@ namespace droidpad {
 
 			void SendMessage(std::string message);
 
-			wxString GetLine() throw (std::runtime_error);
+					   wxString GetLine();
 			bool ParseFromNet();
 
 			/**
 			 * Returns the first character from the buffer, to check if the data is binary or text
 			 */
-			char PeekChar() throw (std::runtime_error);
+					   char PeekChar();
 
 			/**
 			 * Returns a string containing n bytes of data from the network
 			 */
 			std::string GetBytes(size_t n);
 		public:
-			virtual const ModeSetting &GetMode() throw (std::runtime_error);
-			virtual const decode::DPJSData GetData() throw (std::runtime_error);
+					   virtual const ModeSetting &GetMode();
+					   virtual const decode::DPJSData GetData();
 
-			virtual void RequestBinary() throw (std::runtime_error);
+					   virtual void RequestBinary();
 	};
 };
 

@@ -49,7 +49,7 @@ using namespace std;
 bool SecureConnection::staticInitialised = false;
 int SecureConnection::thisReferenceId = -1;
 
-SecureConnection::SecureConnection(AndroidDevice &device) throw (runtime_error) :
+SecureConnection::SecureConnection(AndroidDevice &device) :
 	host(device.ip),
 	port(wxString::Format(wxT("%d"), device.securePort)),
 	name(device.name)
@@ -78,7 +78,7 @@ SecureConnection::~SecureConnection() {
 	SSL_CTX_free(ctx);
 }
 
-int SecureConnection::Start() throw (runtime_error) {
+int SecureConnection::Start() {
 	int err;
 	LOGV("SSL: Connecting");
 	if(BIO_do_connect(netBio) != 1) {
@@ -120,7 +120,7 @@ int SecureConnection::Start() throw (runtime_error) {
 }
 
 // Stops the connection, whatever stage it is at. If the connection is currently open, will send a stop message, then disconnect.
-void SecureConnection::Stop(bool sendStopMessage) throw (std::runtime_error) {
+void SecureConnection::Stop(bool sendStopMessage) {
 	if(ssl) {
 		if(sendStopMessage) {
 		LOGV("Sending stop message");
@@ -144,11 +144,11 @@ void SecureConnection::Stop(bool sendStopMessage) throw (std::runtime_error) {
 	}
 }
 
-void SecureConnection::StartCommunication() throw(std::runtime_error) {
+void SecureConnection::StartCommunication() {
 	GetMode();
 }
 
-const ModeSetting &SecureConnection::GetMode() throw (std::runtime_error) {
+const ModeSetting &SecureConnection::GetMode() {
 	if(mode.initialised) return mode;
 	decode::BinarySignature sig = getSignature();
 	if(!sig.isConnectionInfo())
@@ -172,7 +172,7 @@ const ModeSetting &SecureConnection::GetMode() throw (std::runtime_error) {
 	mode.initialised = true;
 	return mode;
 }
-const decode::DPJSData SecureConnection::GetData() throw (std::runtime_error) {
+const decode::DPJSData SecureConnection::GetData() {
 	decode::BinarySignature sig = getSignature();
 	if(!sig.isBinaryHeader())
 		return DPJSData();
@@ -205,7 +205,7 @@ const decode::DPJSData SecureConnection::GetData() throw (std::runtime_error) {
 	return getBinaryData(header, elems);
 }
 
-decode::BinarySignature SecureConnection::getSignature() throw(std::runtime_error) {
+decode::BinarySignature SecureConnection::getSignature() {
 	decode::BinarySignature sig;
 	if(ssl) { // Read header
 		int read;
