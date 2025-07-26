@@ -171,7 +171,7 @@ namespace droidpad
 		private:
 			static std::vector<Credentials> credentials;
 
-				   static boost::mt19937 gen;
+				   static boost::random::mt19937 gen;
 			static boost::uuids::random_generator uuidGen;
 		public:
 			// Creates a new set of credentials (without a name)

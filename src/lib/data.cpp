@@ -30,7 +30,7 @@
 #include <wx/intl.h>
 #include <wx/utils.h>
 
-#include <boost/random.hpp>
+#include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
 
 #include "log.hpp"
@@ -57,7 +57,7 @@ Tweaks Data::tweaks = Tweaks();
 wxString Data::version = wxT(VERSION);
 
 vector<Credentials> CredentialStore::credentials;
-boost::mt19937 droidpad::CredentialStore::gen;
+boost::random::mt19937 droidpad::CredentialStore::gen;
 // Con Boost >= 1.72, random_generator ya no acepta un generador personalizado.
 boost::uuids::random_generator CredentialStore::uuidGen;
 
